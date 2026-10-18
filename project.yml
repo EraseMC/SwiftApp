@@ -62,6 +62,8 @@ targets:
         CFBundleDevelopmentRegion: en
         ITSAppUsesNonExemptEncryption: false
         NSFaceIDUsageDescription: Confirms staff actions such as bans and rank changes.
+        NSUserActivityTypes:
+          - com.erasemc.app.player
         UIAppFonts:
           - Geologica-Medium.ttf
           - Geologica-SemiBold.ttf
@@ -79,6 +81,8 @@ targets:
         PRODUCT_NAME: Erase
         TARGETED_DEVICE_FAMILY: "1,2"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES: AppIcon-Midnight AppIcon-Lime
+        ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS: YES
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         GENERATE_INFOPLIST_FILE: NO
         CODE_SIGN_STYLE: Automatic

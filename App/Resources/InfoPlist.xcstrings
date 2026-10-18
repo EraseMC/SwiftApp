@@ -1,0 +1,38 @@
+{
+  "sourceLanguage": "en",
+  "version": "1.0",
+  "strings": {
+    "NSFaceIDUsageDescription": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirms staff actions such as bans and rank changes."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Подтверждает действия персонала: баны, смену ранга и другие."
+          }
+        }
+      }
+    },
+    "CFBundleDisplayName": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erase"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erase"
+          }
+        }
+      }
+    }
+  }
+}

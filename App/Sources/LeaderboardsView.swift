@@ -38,6 +38,7 @@ struct LeaderboardsView: View {
 			}
 			.padding(.horizontal, Space.s4)
 			.padding(.bottom, Space.s6)
+			.readableWidth()
 		}
 		.background(Palette.background)
 		.navigationTitle("Leaderboards")
@@ -192,6 +193,7 @@ private struct LadderRow: View {
 		.padding(.horizontal, Space.s3)
 		.padding(.vertical, Space.s3)
 		.contentShape(.rect)
+		.accessibilityElement(children: .combine)
 	}
 
 	private var placeColor: Color {

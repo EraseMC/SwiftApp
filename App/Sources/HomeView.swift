@@ -8,6 +8,8 @@ struct HomeView: View {
 
 	@Environment(\.openURL) private var openURL
 
+	@Environment(Favorites.self) private var favorites
+
 	@State private var status: NetworkStatus?
 
 	@State private var error: APIError?
@@ -21,12 +23,14 @@ struct HomeView: View {
 			VStack(alignment: .leading, spacing: Space.s4) {
 				hero
 				statusCard
+				favoritesRow
 				storeCard
 				topThree
 				modes
 				community
 			}
 			.padding(Space.s4)
+			.readableWidth()
 		}
 		.background(Palette.background)
 		.navigationTitle("Erase")
@@ -145,6 +149,38 @@ struct HomeView: View {
 					.buttonStyle(.pressable)
 				}
 			}
+		}
+	}
+
+	@ViewBuilder
+	private var favoritesRow: some View {
+		if !favorites.names.isEmpty {
+			SectionHeader("Favorites")
+			ScrollView(.horizontal) {
+				HStack(spacing: Space.s3) {
+					ForEach(favorites.names, id: \.self) { name in
+						NavigationLink(value: Route.player(name)) {
+							VStack(spacing: Space.s1) {
+								PlayerHead(name, size: 52)
+								Text(verbatim: name)
+									.font(.eraseCaption.weight(.semibold))
+									.foregroundStyle(Palette.text2)
+									.lineLimit(1)
+									.frame(maxWidth: 76)
+							}
+						}
+						.buttonStyle(.pressable)
+						.contextMenu {
+							Button(role: .destructive) {
+								favorites.toggle(name)
+							} label: {
+								Label("Remove from favorites", systemImage: "star.slash")
+							}
+						}
+					}
+				}
+			}
+			.scrollIndicators(.hidden)
 		}
 	}
 

@@ -2,6 +2,11 @@ import SwiftUI
 
 extension View {
 
+	/// Keeps text columns readable on iPad and in landscape: centred, at most the site's content measure.
+	public func readableWidth(_ width: CGFloat = 760) -> some View {
+		frame(maxWidth: width).frame(maxWidth: .infinity)
+	}
+
 	/// A flat card separated by a hairline, the site's default panel.
 	public func panel(padding: CGFloat = Space.s4) -> some View {
 		self

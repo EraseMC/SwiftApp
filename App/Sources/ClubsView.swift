@@ -96,6 +96,8 @@ struct ClubRow: View {
 		}
 		.padding(Space.s3)
 		.contentShape(.rect)
+
+		.accessibilityElement(children: .combine)
 	}
 }
 
@@ -255,6 +257,7 @@ struct ClubView: View {
 					}
 				}
 				.padding(Space.s4)
+				.readableWidth()
 			}
 		}
 		.background(Palette.background)

@@ -56,6 +56,7 @@ struct AccountView: View {
 				}
 			}
 			.padding(Space.s4)
+			.readableWidth()
 		}
 		.background(Palette.background)
 		.navigationTitle(Copy.text("account.title"))
@@ -242,6 +243,10 @@ struct SettingsView: View {
 				.foregroundStyle(Palette.text)
 			}
 
+			Section("App icon") {
+				AppIconPicker()
+			}
+
 			Section("Erase") {
 				Link(destination: Links.site) {
 					Label("erasemc.com", systemImage: "globe")
@@ -284,5 +289,48 @@ struct SettingsView: View {
 		let short = info?["CFBundleShortVersionString"] as? String ?? "?"
 		let build = info?["CFBundleVersion"] as? String ?? "?"
 		return "\(short) (\(build))"
+	}
+}
+
+/// Switches between the primary icon and the alternates built by `tools/make_icons.py`.
+private struct AppIconPicker: View {
+
+	private static let icons: [(name: String?, preview: String, title: LocalizedStringKey)] = [
+		(nil, "IconPreviews/Classic", "Classic"),
+		("AppIcon-Midnight", "IconPreviews/Midnight", "Midnight"),
+		("AppIcon-Lime", "IconPreviews/Lime", "Lime"),
+	]
+
+	@State private var current = UIApplication.shared.alternateIconName
+
+	var body: some View {
+		HStack(spacing: Space.s4) {
+			ForEach(Self.icons, id: \.preview) { icon in
+				Button {
+					guard current != icon.name else { return }
+					UIApplication.shared.setAlternateIconName(icon.name) { error in
+						if error == nil {
+							Task { @MainActor in current = icon.name }
+						}
+					}
+				} label: {
+					VStack(spacing: Space.s2) {
+						Image(icon.preview)
+							.resizable()
+							.frame(width: 60, height: 60)
+							.clipShape(.rect(cornerRadius: 14, style: .continuous))
+							.overlay {
+								RoundedRectangle(cornerRadius: 14, style: .continuous)
+									.strokeBorder(current == icon.name ? Palette.accent : Palette.line, lineWidth: current == icon.name ? 3 : 1)
+							}
+						Text(icon.title).font(.eraseCaption).foregroundStyle(Palette.text2)
+					}
+					.frame(maxWidth: .infinity)
+				}
+				.buttonStyle(.pressable)
+				.accessibilityAddTraits(current == icon.name ? .isSelected : [])
+			}
+		}
+		.padding(.vertical, Space.s2)
 	}
 }

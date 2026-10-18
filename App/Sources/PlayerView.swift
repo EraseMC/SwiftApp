@@ -8,6 +8,8 @@ struct PlayerView: View {
 
 	@Environment(AppModel.self) private var model
 
+	@Environment(Favorites.self) private var favorites
+
 	@AppStorage("profile.queue") private var queue: Queue = .ranked
 
 	@State private var phase: Phase<PlayerProfile> = .loading
@@ -123,6 +125,7 @@ struct PlayerView: View {
 					}
 				}
 				.padding(Space.s4)
+				.readableWidth()
 			}
 		}
 		.background(Palette.background)
@@ -130,11 +133,29 @@ struct PlayerView: View {
 		.navigationBarTitleDisplayMode(.inline)
 		.toolbar {
 			ToolbarItem(placement: .topBarTrailing) {
-				ShareLink(item: URL(string: "https://erasemc.com/profile/\(name.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? name)")!)
+				Button {
+					favorites.toggle(phase.value?.player.name ?? name)
+				} label: {
+					Label("Favorite", systemImage: favorites.contains(name) ? "star.fill" : "star")
+				}
+				.sensoryFeedback(.success, trigger: favorites.contains(name))
 			}
+			ToolbarItem(placement: .topBarTrailing) {
+				ShareLink(item: profileURL)
+			}
+		}
+		.userActivity("com.erasemc.app.player") { activity in
+			// Handoff: the same profile opens on a Mac or another device in the browser.
+			activity.title = name
+			activity.webpageURL = profileURL
+			activity.isEligibleForHandoff = true
 		}
 		.refreshable { await load() }
 		.task { await load() }
+	}
+
+	private var profileURL: URL {
+		URL(string: "https://erasemc.com/profile/\(name.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? name)")!
 	}
 
 	private func header(_ profile: PlayerProfile) -> some View {
@@ -190,6 +211,9 @@ struct PlayerView: View {
 
 		if let fresh = await profilePhase {
 			withAnimation(Motion.popover) { phase = fresh }
+			if let profile = fresh.value {
+				PlayerSpotlight.index(profile)
+			}
 		}
 		if case .loaded(let matches) = await recentPhase {
 			recent = matches

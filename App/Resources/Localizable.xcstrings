@@ -811,6 +811,76 @@
           }
         }
       }
+    },
+    "Favorites": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Избранные"
+          }
+        }
+      }
+    },
+    "Favorite": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "В избранное"
+          }
+        }
+      }
+    },
+    "Remove from favorites": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Убрать из избранного"
+          }
+        }
+      }
+    },
+    "App icon": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Иконка"
+          }
+        }
+      }
+    },
+    "Classic": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Классика"
+          }
+        }
+      }
+    },
+    "Midnight": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Полночь"
+          }
+        }
+      }
+    },
+    "Lime": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Лайм"
+          }
+        }
+      }
     }
   }
 }

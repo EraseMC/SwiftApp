@@ -56,6 +56,7 @@ struct SupportView: View {
 				)
 			}
 			.padding(Space.s4)
+			.readableWidth()
 		}
 		.background(Palette.background)
 		.navigationTitle(Copy.text("support.title"))

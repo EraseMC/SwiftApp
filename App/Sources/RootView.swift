@@ -1,3 +1,4 @@
+import CoreSpotlight
 import EraseUI
 import SwiftUI
 
@@ -37,8 +38,19 @@ struct RootView: View {
 				stack(.search) { SearchView() }
 			}
 		}
+		.tabViewStyle(.sidebarAdaptable)
 		.onOpenURL { url in
 			if let route = Route(url: url) {
+				model.open(route)
+			}
+		}
+		.onContinueUserActivity(CSSearchableItemActionType) { activity in
+			if let name = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String {
+				model.open(.player(name))
+			}
+		}
+		.onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { activity in
+			if let url = activity.webpageURL, let route = Route(url: url) {
 				model.open(route)
 			}
 		}

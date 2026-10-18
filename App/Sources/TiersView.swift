@@ -35,6 +35,7 @@ struct TiersView: View {
 				}
 			}
 			.padding(Space.s4)
+			.readableWidth()
 		}
 		.background(Palette.background)
 		.navigationTitle(Copy.text("nav.tiers"))
@@ -217,6 +218,7 @@ private struct PlacementRow: View {
 		.padding(.vertical, Space.s2)
 		.opacity(placement.inactive ? 0.6 : 1)
 		.contentShape(.rect)
+		.accessibilityElement(children: .combine)
 	}
 }
 

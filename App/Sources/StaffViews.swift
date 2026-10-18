@@ -62,6 +62,7 @@ struct StaffHomeView: View {
 					}
 				}
 				.padding(Space.s4)
+				.readableWidth()
 			}
 		}
 		.background(Palette.background)
@@ -206,6 +207,7 @@ struct StaffPlayerView: View {
 					history(card)
 				}
 				.padding(Space.s4)
+				.readableWidth()
 			}
 		}
 		.background(Palette.background)

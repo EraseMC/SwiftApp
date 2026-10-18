@@ -142,6 +142,8 @@ struct MatchRow: View {
 			}
 		}
 		.padding(.vertical, Space.s1)
+
+		.accessibilityElement(children: .combine)
 	}
 
 	private var opponents: String {
