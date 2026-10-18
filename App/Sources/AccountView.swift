@@ -307,10 +307,11 @@ private struct AppIconPicker: View {
 		HStack(spacing: Space.s4) {
 			ForEach(Self.icons, id: \.preview) { icon in
 				Button {
-					guard current != icon.name else { return }
-					UIApplication.shared.setAlternateIconName(icon.name) { error in
-						if error == nil {
-							Task { @MainActor in current = icon.name }
+					let name = icon.name
+					guard current != name else { return }
+					Task {
+						if (try? await UIApplication.shared.setAlternateIconName(name)) != nil {
+							current = name
 						}
 					}
 				} label: {

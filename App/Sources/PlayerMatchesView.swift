@@ -142,7 +142,6 @@ struct MatchRow: View {
 			}
 		}
 		.padding(.vertical, Space.s1)
-
 		.accessibilityElement(children: .combine)
 	}
 
