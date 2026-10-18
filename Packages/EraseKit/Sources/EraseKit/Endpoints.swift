@@ -106,6 +106,18 @@ public enum API {
 
 	public static let logout = Endpoint<AuthIdentity>("auth/logout", method: .post)
 
+	/// Trades the one-time ticket from the sign-in redirect and the PKCE verifier for a session.
+	public static func appToken(ticket: String, verifier: String) -> Endpoint<AppSession> {
+		Endpoint("auth/app/token", method: .post, json: ["ticket": ticket, "verifier": verifier])
+	}
+
+	/// Where the app starts the Microsoft sign-in, carrying its PKCE challenge.
+	public static func signInURL(challenge: String, base: URL = APIClient.production.baseURL) -> URL {
+		var url = base.appending(path: "auth/microsoft")
+		url.append(queryItems: [URLQueryItem(name: "app", value: challenge)])
+		return url
+	}
+
 	public static let accountInsights = Endpoint<AccountInsights>("account/insights")
 
 	/// PNG renders of a player's skin.

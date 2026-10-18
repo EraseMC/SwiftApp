@@ -7,6 +7,8 @@ struct EraseApp: App {
 
 	@State private var model = AppModel()
 
+	@State private var auth = AuthModel(api: .production)
+
 	@AppStorage("theme") private var theme: AppTheme = .system
 
 	init() {
@@ -17,6 +19,7 @@ struct EraseApp: App {
 		WindowGroup {
 			RootView()
 				.environment(model)
+				.environment(auth)
 				.tint(Palette.accentText)
 				.preferredColorScheme(theme.colorScheme)
 		}

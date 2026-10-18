@@ -3,7 +3,10 @@ import Foundation
 /// Talks to the Imprint Web API, the same one erasemc.com renders from.
 public final class APIClient: Sendable {
 
-	public static let production = APIClient(baseURL: URL(string: "https://erasemc.com/api/v1/")!)
+	public static let production = APIClient(
+		baseURL: URL(string: "https://erasemc.com/api/v1/")!,
+		credentials: Credentials(keychain: "com.erasemc.app.session")
+	)
 
 	public let baseURL: URL
 
@@ -11,14 +14,21 @@ public final class APIClient: Sendable {
 
 	private let decoder: JSONDecoder
 
-	public init(baseURL: URL, session: URLSession = .shared) {
+	/// The signed-in session's token, sent as a bearer token on every call.
+	public let credentials: Credentials
+
+	public init(baseURL: URL, session: URLSession = .shared, credentials: Credentials = Credentials()) {
 		self.baseURL = baseURL
 		self.session = session
+		self.credentials = credentials
 		self.decoder = .imprint
 	}
 
 	public func send<Response: Decodable & Sendable>(_ endpoint: Endpoint<Response>) async throws(APIError) -> Response {
-		let request = try endpoint.request(relativeTo: baseURL)
+		var request = try endpoint.request(relativeTo: baseURL)
+		if let token = credentials.token {
+			request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+		}
 		let data: Data
 		let response: URLResponse
 

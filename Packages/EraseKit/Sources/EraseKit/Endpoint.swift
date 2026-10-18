@@ -16,10 +16,18 @@ public struct Endpoint<Response: Decodable & Sendable>: Sendable {
 
 	public let query: [URLQueryItem]
 
-	public init(_ path: String, method: Method = .get, query: [URLQueryItem] = []) {
+	/// A JSON body for POST and PUT calls.
+	public let body: Data?
+
+	public init(_ path: String, method: Method = .get, query: [URLQueryItem] = [], body: Data? = nil) {
 		self.path = path
 		self.method = method
 		self.query = query
+		self.body = body
+	}
+
+	public init(_ path: String, method: Method, json: some Encodable) {
+		self.init(path, method: method, body: try? JSONEncoder().encode(json))
 	}
 
 	func request(relativeTo base: URL) throws(APIError) -> URLRequest {
@@ -38,6 +46,10 @@ public struct Endpoint<Response: Decodable & Sendable>: Sendable {
 		var request = URLRequest(url: url)
 		request.httpMethod = method.rawValue
 		request.setValue("application/json", forHTTPHeaderField: "Accept")
+		if let body {
+			request.httpBody = body
+			request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+		}
 		return request
 	}
 }

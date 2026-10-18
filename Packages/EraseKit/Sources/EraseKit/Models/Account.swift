@@ -10,6 +10,11 @@ public struct AuthIdentity: Codable, Hashable, Sendable {
 	public let staff: String?
 }
 
+public struct AppSession: Codable, Hashable, Sendable {
+	public let token: String
+	public let expiresAt: Date
+}
+
 public struct AuthLinkCode: Codable, Hashable, Sendable {
 	public let code: String
 	public let expiresAt: Date

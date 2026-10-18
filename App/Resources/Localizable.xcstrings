@@ -612,12 +612,62 @@
         }
       }
     },
-    "Sign-in in the app is coming soon.": {
+    "Settings": {
       "localizations": {
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Вход в приложении скоро появится."
+            "value": "Настройки"
+          }
+        }
+      }
+    },
+    "Done": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Готово"
+          }
+        }
+      }
+    },
+    "Days": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Дни"
+          }
+        }
+      }
+    },
+    "Kills": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Убийства"
+          }
+        }
+      }
+    },
+    "Day": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "День"
+          }
+        }
+      }
+    },
+    "Games": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Игры"
           }
         }
       }
