@@ -46,6 +46,8 @@ import Testing
 		#expect(board.columns.count == 5)
 		#expect(board.columns.flatMap(\.players).contains { $0.test != nil })
 		_ = try load("tiers-overall", as: TierOverall.self)
+		let player: PlayerTiers = try load("player-tiers")
+		#expect(!player.placements.isEmpty)
 	}
 
 	@Test func clubs() throws {

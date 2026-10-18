@@ -14,6 +14,8 @@ struct PlayerView: View {
 
 	@State private var recent: [MatchEntry] = []
 
+	@State private var tiers: [TierPlacement] = []
+
 	var body: some View {
 		ScrollView {
 			LoadState(phase, retry: load) { profile in
@@ -25,6 +27,27 @@ struct PlayerView: View {
 					}
 
 					summary(profile.summary(for: queue))
+
+					if !tiers.isEmpty {
+						ScrollView(.horizontal) {
+							HStack(spacing: Space.s2) {
+								ForEach(tiers) { placement in
+									HStack(spacing: Space.s1) {
+										ModeIcon(Mode.of(placement.board), size: 18)
+										TierChip(label: placement.label, level: placement.level, inactive: placement.inactive)
+										Text(verbatim: placement.platform.rawValue.uppercased())
+											.font(.eraseCaption)
+											.foregroundStyle(Palette.text3)
+									}
+									.padding(.horizontal, Space.s3)
+									.padding(.vertical, Space.s2)
+									.background(Palette.surface, in: .capsule)
+									.overlay(Capsule().strokeBorder(Palette.line))
+								}
+							}
+						}
+						.scrollIndicators(.hidden)
+					}
 
 					SectionHeader("Duels")
 					LazyVGrid(columns: [GridItem(.adaptive(minimum: 150), spacing: Space.s3)], spacing: Space.s3) {
@@ -163,12 +186,16 @@ struct PlayerView: View {
 		let api = model.api
 		async let profilePhase = api.phase(API.player(name))
 		async let recentPhase = api.phase(API.matches(name, limit: 5))
+		async let tiersPhase = api.phase(API.playerTiers(name))
 
 		if let fresh = await profilePhase {
 			withAnimation(Motion.popover) { phase = fresh }
 		}
 		if case .loaded(let matches) = await recentPhase {
 			recent = matches
+		}
+		if case .loaded(let found) = await tiersPhase {
+			tiers = found.placements
 		}
 	}
 }

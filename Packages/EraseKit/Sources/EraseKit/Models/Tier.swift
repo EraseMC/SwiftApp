@@ -101,3 +101,10 @@ public struct TierOverall: Codable, Hashable, Sendable {
 	public let season: Int
 	public let players: [TierStanding]
 }
+
+/// A player's placements on every board and league, plus their recent tests.
+public struct PlayerTiers: Codable, Hashable, Sendable {
+	public let name: String
+	public let placements: [TierPlacement]
+	public let tests: [TierTest]
+}

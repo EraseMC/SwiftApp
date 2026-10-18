@@ -57,7 +57,7 @@ public enum API {
 		return Endpoint("players/\(name)/elo-history", query: query)
 	}
 
-	public static func playerTiers(_ name: String) -> Endpoint<[TierPlacement]> {
+	public static func playerTiers(_ name: String) -> Endpoint<PlayerTiers> {
 		Endpoint("players/\(name)/tiers")
 	}
 
