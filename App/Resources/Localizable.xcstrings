@@ -751,6 +751,66 @@
           }
         }
       }
+    },
+    "Players online": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Игроки онлайн"
+          }
+        }
+      }
+    },
+    "Tells how many players are on Erase right now.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Говорит, сколько игроков сейчас на Erase."
+          }
+        }
+      }
+    },
+    "The Erase server is not answering right now.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сервер Erase сейчас не отвечает."
+          }
+        }
+      }
+    },
+    "%lld players are on Erase right now.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сейчас на Erase игроков: %lld."
+          }
+        }
+      }
+    },
+    "Open player": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Открыть игрока"
+          }
+        }
+      }
+    },
+    "Opens a player's Erase profile.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Открывает профиль игрока Erase."
+          }
+        }
+      }
     }
   }
 }

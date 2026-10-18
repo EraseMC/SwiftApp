@@ -1,0 +1,126 @@
+{
+  "sourceLanguage": "en",
+  "version": "1.0",
+  "strings": {
+    "Erase online": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Онлайн Erase"
+          }
+        }
+      }
+    },
+    "Players on the server right now.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Игроки на сервере прямо сейчас."
+          }
+        }
+      }
+    },
+    "%@ online": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ онлайн"
+          }
+        }
+      }
+    },
+    "Erase · %@ online": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erase · %@ онлайн"
+          }
+        }
+      }
+    },
+    "online now": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "сейчас онлайн"
+          }
+        }
+      }
+    },
+    "Player": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Игрок"
+          }
+        }
+      }
+    },
+    "Shows a player's rating.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Показывает рейтинг игрока."
+          }
+        }
+      }
+    },
+    "Player name": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ник игрока"
+          }
+        }
+      }
+    },
+    "A player's global Elo and place.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Общий Эло и место игрока."
+          }
+        }
+      }
+    },
+    "Edit the widget and enter a player name.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Измените виджет и введите ник игрока."
+          }
+        }
+      }
+    },
+    "Play Erase": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Играть на Erase"
+          }
+        }
+      }
+    },
+    "Opens Minecraft with the Erase server.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Открывает Minecraft с сервером Erase."
+          }
+        }
+      }
+    }
+  }
+}
