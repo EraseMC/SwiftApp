@@ -14,11 +14,16 @@ struct HomeView: View {
 
 	@State private var copied = false
 
+	@State private var top: [LadderEntry] = []
+
 	var body: some View {
 		ScrollView {
 			VStack(alignment: .leading, spacing: Space.s4) {
 				hero
 				statusCard
+				topThree
+				modes
+				community
 			}
 			.padding(Space.s4)
 		}
@@ -118,6 +123,82 @@ struct HomeView: View {
 		.panel()
 	}
 
+	@ViewBuilder
+	private var topThree: some View {
+		if !top.isEmpty {
+			SectionHeader(LocalizedStringKey(Copy.text("home.topThree")))
+			HStack(spacing: Space.s3) {
+				ForEach(top, id: \.place) { entry in
+					NavigationLink(value: Route.player(entry.name)) {
+						VStack(spacing: Space.s2) {
+							PlayerHead(entry.name, size: 48)
+							RankedName(entry.name, rank: entry.rank)
+								.font(.eraseFootnote.weight(.semibold))
+							Text(verbatim: "\(entry.elo ?? entry.wins)")
+								.font(.eraseNumber.weight(.bold))
+								.foregroundStyle(tierColor(entry.place))
+						}
+						.frame(maxWidth: .infinity)
+						.panel(padding: Space.s3)
+					}
+					.buttonStyle(.pressable)
+				}
+			}
+		}
+	}
+
+	private var modes: some View {
+		VStack(alignment: .leading, spacing: Space.s3) {
+			SectionHeader(LocalizedStringKey(Copy.text("home.modes.title")))
+			LazyVGrid(columns: [GridItem(.adaptive(minimum: 96), spacing: Space.s2)], spacing: Space.s2) {
+				ForEach(Mode.ladders) { mode in
+					Button {
+						UserDefaults.standard.set(mode.key.rawValue, forKey: "leaderboards.board")
+						UserDefaults.standard.set("players", forKey: "leaderboards.scope")
+						model.tab = .leaderboards
+					} label: {
+						VStack(spacing: Space.s2) {
+							ModeIcon(mode, size: 36)
+							Text(verbatim: mode.name)
+								.font(.eraseCaption)
+								.foregroundStyle(Palette.text2)
+								.lineLimit(1)
+								.minimumScaleFactor(0.8)
+						}
+						.frame(maxWidth: .infinity)
+						.padding(.vertical, Space.s3)
+						.background(Palette.surface, in: .rect(cornerRadius: Radius.md))
+						.overlay(RoundedRectangle(cornerRadius: Radius.md).strokeBorder(Palette.line))
+					}
+					.buttonStyle(.pressable)
+				}
+			}
+		}
+	}
+
+	private var community: some View {
+		VStack(alignment: .leading, spacing: Space.s3) {
+			SectionHeader(LocalizedStringKey(Copy.text("home.community.title")))
+			Text(Copy.text("home.community.body"))
+				.font(.eraseCallout)
+				.foregroundStyle(Palette.text2)
+			HStack(spacing: Space.s2) {
+				Link(destination: Links.discord) {
+					Label("Discord", systemImage: "bubble.left.and.bubble.right.fill")
+				}
+				Link(destination: Links.telegram) {
+					Label("Telegram", systemImage: "paperplane.fill")
+				}
+				Link(destination: Links.tiktok) {
+					Label("TikTok", systemImage: "play.rectangle.fill")
+				}
+			}
+			.font(.eraseFootnote.weight(.semibold))
+			.buttonStyle(.bordered)
+			.tint(Palette.text2)
+		}
+	}
+
 	private var address: String {
 		let host = status?.address ?? "erasemc.com"
 		let port = status?.port ?? 19132
@@ -136,6 +217,9 @@ struct HomeView: View {
 	}
 
 	private func load() async {
+		if top.isEmpty, case .loaded(let board) = await model.api.phase(API.leaderboard("global", limit: 3)) {
+			top = board.entries
+		}
 		do throws(APIError) {
 			let fresh = try await model.api.send(API.networkStatus)
 			status = fresh

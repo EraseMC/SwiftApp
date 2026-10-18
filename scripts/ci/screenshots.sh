@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Installs the simulator build and captures every tab in both appearances and both languages.
+# Installs the simulator build and captures every tab, in Russian dark and English light.
 # Usage: screenshots.sh <path/to/Erase.app> <output dir>
 set -euo pipefail
 
@@ -32,21 +32,24 @@ xcrun simctl bootstatus "$udid" -b
 xcrun simctl status_bar "$udid" override --time "9:41" --batteryState charged --batteryLevel 100 --cellularBars 4 --wifiBars 3
 xcrun simctl install "$udid" "$app"
 
-for language in en ru; do
-	for appearance in dark light; do
+# Two combinations cover both languages and both themes at half the frames.
+for combo in ru:dark en:light; do
+	language="${combo%%:*}"
+	appearance="${combo##*:}"
+	{
 		xcrun simctl ui "$udid" appearance "$appearance"
 		for screen in "${screens[@]}"; do
 			xcrun simctl launch --terminate-running-process "$udid" "$bundle" \
 				-screen "$screen" -AppleLanguages "($language)" -AppleLocale "$language" >/dev/null
 			# Network-backed screens need a moment to load and settle their animations.
-			sleep 5
+			sleep 4
 			xcrun simctl io "$udid" screenshot --type=png "$out/$language-$appearance-$screen.png" >/dev/null
 		done
-		# Pushed screens are reached through deep links.
-		xcrun simctl openurl "$udid" "erasemc://player/khaoslxng"
+		# Pushed screens open through a launch argument; `simctl openurl` leaves a system prompt on screen.
+		xcrun simctl launch --terminate-running-process "$udid" "$bundle" 			-screen home -route "erasemc://player/khaoslxng" -AppleLanguages "($language)" -AppleLocale "$language" >/dev/null
 		sleep 6
 		xcrun simctl io "$udid" screenshot --type=png "$out/$language-$appearance-player.png" >/dev/null
-	done
+	}
 done
 
 ls -1 "$out"

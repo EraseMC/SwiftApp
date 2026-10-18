@@ -12,6 +12,8 @@ struct PlayerView: View {
 
 	@State private var phase: Phase<PlayerProfile> = .loading
 
+	@State private var recent: [MatchEntry] = []
+
 	var body: some View {
 		ScrollView {
 			LoadState(phase, retry: load) { profile in
@@ -33,6 +35,69 @@ struct PlayerView: View {
 							.buttonStyle(.pressable)
 						}
 					}
+
+					SectionHeader("Recent matches") {
+						NavigationLink(value: Route.playerMatches(profile.player.name)) {
+							Text("All").font(.eraseFootnote.weight(.semibold))
+						}
+					}
+					if recent.isEmpty {
+						Text("No matches yet")
+							.font(.eraseFootnote)
+							.foregroundStyle(Palette.text3)
+					} else {
+						VStack(spacing: 0) {
+							ForEach(recent) { match in
+								NavigationLink(value: Route.match(match.id, perspective: profile.player.name)) {
+									MatchRow(match: match)
+										.padding(.horizontal, Space.s3)
+										.padding(.vertical, Space.s1)
+								}
+								.buttonStyle(.pressable)
+							}
+						}
+						.background(Palette.surface, in: .rect(cornerRadius: Radius.md))
+						.overlay(RoundedRectangle(cornerRadius: Radius.md).strokeBorder(Palette.line))
+					}
+
+					if let club = profile.club {
+						SectionHeader(LocalizedStringKey(Copy.text("nav.clubs")))
+						NavigationLink(value: Route.club(club.name)) {
+							HStack(spacing: Space.s3) {
+								ClubTag(tag: club.tag)
+								Text(verbatim: club.name).font(.eraseHeadline).foregroundStyle(Palette.text)
+								Spacer()
+								Text(verbatim: club.role.capitalized)
+									.font(.eraseFootnote)
+									.foregroundStyle(Palette.text3)
+								Image(systemName: "chevron.right")
+									.font(.footnote.weight(.semibold))
+									.foregroundStyle(Palette.text3)
+							}
+							.panel(padding: Space.s3)
+						}
+						.buttonStyle(.pressable)
+					}
+
+					if !profile.friends.isEmpty {
+						SectionHeader("Friends")
+						ScrollView(.horizontal) {
+							HStack(spacing: Space.s3) {
+								ForEach(profile.friends, id: \.name) { friend in
+									NavigationLink(value: Route.player(friend.name)) {
+										VStack(spacing: Space.s1) {
+											PlayerHead(friend.name, size: 48)
+											RankedName(friend.name, rank: friend.rank)
+												.font(.eraseCaption)
+												.frame(maxWidth: 72)
+										}
+									}
+									.buttonStyle(.pressable)
+								}
+							}
+						}
+						.scrollIndicators(.hidden)
+					}
 				}
 				.padding(Space.s4)
 			}
@@ -40,6 +105,11 @@ struct PlayerView: View {
 		.background(Palette.background)
 		.navigationTitle(name)
 		.navigationBarTitleDisplayMode(.inline)
+		.toolbar {
+			ToolbarItem(placement: .topBarTrailing) {
+				ShareLink(item: URL(string: "https://erasemc.com/profile/\(name.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? name)")!)
+			}
+		}
 		.refreshable { await load() }
 		.task { await load() }
 	}
@@ -90,8 +160,15 @@ struct PlayerView: View {
 	}
 
 	private func load() async {
-		if let fresh = await model.api.phase(API.player(name)) {
+		let api = model.api
+		async let profilePhase = api.phase(API.player(name))
+		async let recentPhase = api.phase(API.matches(name, limit: 5))
+
+		if let fresh = await profilePhase {
 			withAnimation(Motion.popover) { phase = fresh }
+		}
+		if case .loaded(let matches) = await recentPhase {
+			recent = matches
 		}
 	}
 }

@@ -30,11 +30,11 @@ struct RootView: View {
 			}
 
 			Tab("Account", systemImage: "person.crop.circle.fill", value: .account) {
-				stack(.account) { ComingSoonView(title: "Account", systemImage: "person.crop.circle.fill") }
+				stack(.account) { AccountView() }
 			}
 
 			Tab(value: .search, role: .search) {
-				stack(.search) { ComingSoonView(title: "Search", systemImage: "magnifyingglass") }
+				stack(.search) { SearchView() }
 			}
 		}
 		.onOpenURL { url in

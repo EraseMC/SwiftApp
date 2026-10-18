@@ -6,6 +6,9 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 concurrency:
   group: ios-${{ github.ref }}
   cancel-in-progress: true
@@ -61,6 +64,22 @@ jobs:
           name: Erase-ipa
           path: out/*.ipa
           retention-days: 30
+
+      # A fixed release that always holds the newest build, so Sideloadly gets a direct link.
+      - name: Publish latest build
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp out/*.ipa out/Erase.ipa
+          notes="Build of ${GITHUB_SHA::7}: $(git log -1 --format=%s)"
+          if gh release view latest >/dev/null 2>&1; then
+            gh release upload latest out/Erase.ipa --clobber
+            gh release edit latest --notes "$notes"
+          else
+            gh release create latest out/Erase.ipa --title "Latest build" --notes "$notes" --prerelease
+          fi
+          git tag -f latest && git push -f origin refs/tags/latest
 
   screenshots:
     name: Simulator screenshots

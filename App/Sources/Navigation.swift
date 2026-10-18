@@ -48,13 +48,13 @@ extension View {
 			case .player(let name):
 				PlayerView(name: name)
 			case .playerMatches(let name):
-				ComingSoonView(title: "Matches", systemImage: "list.bullet").id(name)
+				PlayerMatchesView(name: name)
 			case .ladder(let player, let mode):
-				ComingSoonView(title: "Duels", systemImage: "chart.xyaxis.line").id("\(player)-\(mode.rawValue)")
-			case .match(let id, _):
-				ComingSoonView(title: "Match", systemImage: "flag.checkered").id(id)
+				LadderView(player: player, mode: mode)
+			case .match(let id, let perspective):
+				MatchView(id: id, perspective: perspective)
 			case .club(let name):
-				ComingSoonView(title: "Clubs", systemImage: "shield.lefthalf.filled").id(name)
+				ClubView(name: name)
 			}
 		}
 	}

@@ -30,3 +30,15 @@ import Testing
 		#expect(ImprintDate.parse(text) != nil)
 	}
 }
+
+@Suite struct ItemTextureTests {
+
+	@Test func aliasesResolve() {
+		#expect(ItemTexture.asset(for: "steak") == "Items/beef_cooked")
+		#expect(ItemTexture.asset(for: "minecraft:ender_pearl") == "Items/ender_pearl")
+		#expect(ItemTexture.asset(for: "strong_healing_splash_potion") == "Items/potion_bottle_splash_heal")
+		#expect(ItemTexture.asset(for: "potion") == "Items/potion_bottle_drinkable")
+		#expect(ItemTexture.asset(for: "bedrock") == nil)
+		#expect(ItemTexture.name(for: "strong_healing_splash_potion") == "Strong healing splash potion")
+	}
+}

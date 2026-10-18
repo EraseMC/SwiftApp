@@ -7,6 +7,8 @@ struct EraseApp: App {
 
 	@State private var model = AppModel()
 
+	@AppStorage("theme") private var theme: AppTheme = .system
+
 	init() {
 		Appearance.apply()
 	}
@@ -16,6 +18,7 @@ struct EraseApp: App {
 			RootView()
 				.environment(model)
 				.tint(Palette.accent)
+				.preferredColorScheme(theme.colorScheme)
 		}
 	}
 }
@@ -36,6 +39,10 @@ final class AppModel {
 		self.api = api
 		// CI screenshots launch the app with `-screen <tab>` to open a given tab.
 		self.tab = UserDefaults.standard.string(forKey: "screen").flatMap(AppTab.init(rawValue:)) ?? .home
+		// …and `-route erasemc://player/<name>` to open a pushed screen without the system's open-link prompt.
+		if let link = UserDefaults.standard.string(forKey: "route"), let url = URL(string: link), let route = Route(url: url) {
+			paths[tab] = [route]
+		}
 	}
 
 	/// Shows a deep-linked screen on top of the current tab.
