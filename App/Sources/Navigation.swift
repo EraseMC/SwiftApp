@@ -9,6 +9,7 @@ enum Route: Hashable {
 	case ladder(player: String, mode: ModeKey)
 	case match(Int, perspective: String?)
 	case club(String)
+	case store
 
 	init?(url: URL) {
 		guard url.scheme == "erasemc" || url.host() == "erasemc.com" else {
@@ -19,6 +20,11 @@ enum Route: Hashable {
 		var parts = url.pathComponents.filter { $0 != "/" }
 		if url.scheme == "erasemc", let host = url.host() {
 			parts.insert(host, at: 0)
+		}
+
+		if parts == ["store"] {
+			self = .store
+			return
 		}
 
 		guard parts.count >= 2 else {
@@ -55,6 +61,8 @@ extension View {
 				MatchView(id: id, perspective: perspective)
 			case .club(let name):
 				ClubView(name: name)
+			case .store:
+				StoreView()
 			}
 		}
 	}

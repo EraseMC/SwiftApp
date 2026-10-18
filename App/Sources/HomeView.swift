@@ -21,6 +21,7 @@ struct HomeView: View {
 			VStack(alignment: .leading, spacing: Space.s4) {
 				hero
 				statusCard
+				storeCard
 				topThree
 				modes
 				community
@@ -145,6 +146,26 @@ struct HomeView: View {
 				}
 			}
 		}
+	}
+
+	private var storeCard: some View {
+		NavigationLink(value: Route.store) {
+			HStack(spacing: Space.s3) {
+				Image(systemName: "bag.fill")
+					.font(.title2)
+					.foregroundStyle(Palette.accentInk)
+					.frame(width: 44, height: 44)
+					.background(Palette.accent, in: .rect(cornerRadius: Radius.sm))
+				VStack(alignment: .leading, spacing: 2) {
+					Text(Copy.text("nav.store")).font(.eraseHeadline).foregroundStyle(Palette.text)
+					Text("Ranks, coins and crate keys").font(.eraseFootnote).foregroundStyle(Palette.text2)
+				}
+				Spacer()
+				Image(systemName: "chevron.right").foregroundStyle(Palette.text3)
+			}
+			.panel(padding: Space.s3)
+		}
+		.buttonStyle(.pressable)
 	}
 
 	private var modes: some View {

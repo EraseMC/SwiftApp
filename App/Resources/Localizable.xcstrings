@@ -671,6 +671,66 @@
           }
         }
       }
+    },
+    "Ranks, coins and crate keys": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ранги, коины и ключи"
+          }
+        }
+      }
+    },
+    "Buy": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Купить"
+          }
+        }
+      }
+    },
+    "Goods are delivered to this player on the server.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Покупка придёт этому игроку на сервере."
+          }
+        }
+      }
+    },
+    "No player with this name has joined Erase.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Игрок с таким ником ещё не заходил на Erase."
+          }
+        }
+      }
+    },
+    "Check the player name.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Проверьте ник игрока."
+          }
+        }
+      }
+    },
+    "The store is unavailable right now. Try again later.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Магазин сейчас недоступен. Попробуйте позже."
+          }
+        }
+      }
     }
   }
 }
