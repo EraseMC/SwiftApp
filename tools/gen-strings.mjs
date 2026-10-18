@@ -11,6 +11,15 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const web = resolve(process.argv[2] ?? resolve(root, "..", "Imprint-Web"));
 const { dictionaries } = await import(pathToFileURL(resolve(web, "lib", "i18n.ts")).href);
+const { faqs } = await import(pathToFileURL(resolve(web, "lib", "data.ts")).href);
+
+// The FAQ lives in data.ts as two parallel lists; it becomes `faq.<n>.q` / `faq.<n>.a`.
+for (const [locale, entries] of Object.entries(faqs)) {
+  entries.forEach((entry, index) => {
+    dictionaries[locale][`faq.${index}.q`] = entry.q;
+    dictionaries[locale][`faq.${index}.a`] = entry.a;
+  });
+}
 
 const strings = {};
 for (const key of Object.keys(dictionaries.en).sort()) {

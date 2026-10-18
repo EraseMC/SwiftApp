@@ -3452,6 +3452,74 @@
         }
       }
     },
+    "faq.0.a": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add erasemc.com with port 19132 in Minecraft: Bedrock Edition."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Добавь erasemc.com с портом 19132 в Minecraft: Bedrock Edition."
+          }
+        }
+      }
+    },
+    "faq.0.q": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How do I join?"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Как зайти на сервер?"
+          }
+        }
+      }
+    },
+    "faq.1.a": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open a ticket in the official ERASE Discord server."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Создай тикет в официальном Discord-сервере ERASE."
+          }
+        }
+      }
+    },
+    "faq.1.q": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Where can I contact staff?"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Где связаться с администрацией?"
+          }
+        }
+      }
+    },
     "footer.about": {
       "extractionState": "manual",
       "localizations": {

@@ -45,6 +45,15 @@ struct AccountView: View {
 				} else {
 					LinkCard()
 				}
+
+				if auth.staffRole != nil {
+					shortcut(Copy.text("staff.title"), icon: "shield.lefthalf.filled", route: .staff)
+				}
+
+				HStack(spacing: Space.s3) {
+					shortcut(Copy.text("nav.store"), icon: "bag.fill", route: .store)
+					shortcut(Copy.text("nav.support"), icon: "lifepreserver.fill", route: .support)
+				}
 			}
 			.padding(Space.s4)
 		}
@@ -64,6 +73,20 @@ struct AccountView: View {
 		}
 		.refreshable { await auth.refresh() }
 		.task { await auth.refresh() }
+	}
+}
+
+extension AccountView {
+
+	fileprivate func shortcut(_ title: String, icon: String, route: Route) -> some View {
+		NavigationLink(value: route) {
+			Label(title, systemImage: icon)
+				.font(.eraseHeadline)
+				.foregroundStyle(Palette.text)
+				.frame(maxWidth: .infinity)
+				.panel(padding: Space.s4)
+		}
+		.buttonStyle(.pressable)
 	}
 }
 

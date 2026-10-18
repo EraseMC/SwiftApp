@@ -10,6 +10,14 @@ enum Route: Hashable {
 	case match(Int, perspective: String?)
 	case club(String)
 	case store
+	case support
+	case staff
+	case staffPlayers
+	case staffPlayer(String)
+	case staffTiers
+	case staffReviews
+	case staffTesters
+	case staffTeam
 
 	init?(url: URL) {
 		guard url.scheme == "erasemc" || url.host() == "erasemc.com" else {
@@ -24,6 +32,10 @@ enum Route: Hashable {
 
 		if parts == ["store"] {
 			self = .store
+			return
+		}
+		if parts == ["support"] {
+			self = .support
 			return
 		}
 
@@ -63,6 +75,22 @@ extension View {
 				ClubView(name: name)
 			case .store:
 				StoreView()
+			case .support:
+				SupportView()
+			case .staff:
+				StaffHomeView()
+			case .staffPlayers:
+				StaffPlayersView()
+			case .staffPlayer(let name):
+				StaffPlayerView(name: name)
+			case .staffTiers:
+				StaffTiersView()
+			case .staffReviews:
+				StaffReviewsView()
+			case .staffTesters:
+				StaffTestersView()
+			case .staffTeam:
+				StaffTeamView()
 			}
 		}
 	}

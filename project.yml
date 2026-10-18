@@ -60,6 +60,7 @@ targets:
           - ru
         CFBundleDevelopmentRegion: en
         ITSAppUsesNonExemptEncryption: false
+        NSFaceIDUsageDescription: Confirms staff actions such as bans and rank changes.
         UIAppFonts:
           - Geologica-Medium.ttf
           - Geologica-SemiBold.ttf
