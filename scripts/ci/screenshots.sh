@@ -1,22 +1,26 @@
 #!/usr/bin/env bash
 # Installs the simulator build and captures every tab, in Russian dark and English light.
-# Usage: screenshots.sh <path/to/Erase.app> <output dir>
+# Usage: screenshots.sh <path/to/Erase.app> <output dir> [iOS major version, newest by default]
 set -euo pipefail
 
 app="$1"
 out="$2"
+major="${3:-}"
 bundle="com.erasemc.app"
 screens=(home leaderboards tiers account search)
 
 mkdir -p "$out"
 
 # The newest iOS runtime, on the first iPhone Pro it offers (falls back to any iPhone).
-udid=$(xcrun simctl list devices available -j | python3 -c '
-import json, re, sys
+udid=$(xcrun simctl list devices available -j | MAJOR="$major" python3 -c '
+import json, os, re, sys
 devices = json.load(sys.stdin)["devices"]
+major = os.environ.get("MAJOR", "")
 def version(runtime):
     return [int(n) for n in re.findall(r"\d+", runtime.split("iOS-")[-1])]
 runtimes = sorted((r for r in devices if "iOS" in r and devices[r]), key=version, reverse=True)
+if major:
+    runtimes = [r for r in runtimes if version(r)[0] == int(major)]
 for runtime in runtimes:
     phones = [d for d in devices[runtime] if d["name"].startswith("iPhone")]
     pro = [d for d in phones if "Pro" in d["name"] and "Max" not in d["name"]]
