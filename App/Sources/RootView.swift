@@ -26,7 +26,7 @@ struct RootView: View {
 			}
 
 			Tab("Tiers", systemImage: "chart.bar.fill", value: .tiers) {
-				stack(.tiers) { ComingSoonView(title: "Tiers", systemImage: "chart.bar.fill") }
+				stack(.tiers) { TiersView() }
 			}
 
 			Tab("Account", systemImage: "person.crop.circle.fill", value: .account) {
@@ -45,9 +45,12 @@ struct RootView: View {
 	}
 
 	private func stack<Root: View>(_ tab: AppTab, @ViewBuilder root: () -> Root) -> some View {
-		@Bindable var model = model
+		let path = Binding(
+			get: { model.paths[tab] ?? [] },
+			set: { model.paths[tab] = $0 }
+		)
 
-		return NavigationStack(path: $model.paths[tab, default: []]) {
+		return NavigationStack(path: path) {
 			root().routes()
 		}
 	}
