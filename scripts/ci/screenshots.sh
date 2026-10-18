@@ -46,7 +46,8 @@ for combo in ru:dark en:light; do
 			xcrun simctl io "$udid" screenshot --type=png "$out/$language-$appearance-$screen.png" >/dev/null
 		done
 		# Pushed screens open through a launch argument; `simctl openurl` leaves a system prompt on screen.
-		xcrun simctl launch --terminate-running-process "$udid" "$bundle" 			-screen home -route "erasemc://player/khaoslxng" -AppleLanguages "($language)" -AppleLocale "$language" >/dev/null
+		xcrun simctl launch --terminate-running-process "$udid" "$bundle" \
+			-screen home -route "erasemc://player/khaoslxng" -AppleLanguages "($language)" -AppleLocale "$language" >/dev/null
 		sleep 6
 		xcrun simctl io "$udid" screenshot --type=png "$out/$language-$appearance-player.png" >/dev/null
 	}

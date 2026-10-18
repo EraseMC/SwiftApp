@@ -15,7 +15,7 @@ extension PlayerRank {
 			if traits.userInterfaceStyle == .light {
 				return UIColor(hue: hue, saturation: saturation, brightness: min(brightness, 0.62), alpha: 1)
 			}
-			return UIColor(hue: hue, saturation: saturation, brightness: max(brightness, 0.55), alpha: 1)
+			return UIColor(hue: hue, saturation: saturation, brightness: max(brightness, 0.72), alpha: 1)
 		})
 	}
 }

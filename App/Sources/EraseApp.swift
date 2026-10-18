@@ -17,7 +17,7 @@ struct EraseApp: App {
 		WindowGroup {
 			RootView()
 				.environment(model)
-				.tint(Palette.accent)
+				.tint(Palette.accentText)
 				.preferredColorScheme(theme.colorScheme)
 		}
 	}
