@@ -274,17 +274,24 @@ struct HomeView: View {
 	}
 
 	private func load() async {
-		if top.isEmpty, case .loaded(let board) = await model.api.phase(API.leaderboard("global", limit: 3)) {
-			top = board.entries
-		}
-		do throws(APIError) {
-			let fresh = try await model.api.send(API.networkStatus)
-			status = fresh
+		let api = model.api
+		let needsTop = top.isEmpty
+		// The live counter must not wait for the top three, so both requests run together.
+		async let board = needsTop ? api.phase(API.leaderboard("global", limit: 3)) : nil
+		async let fresh = api.phase(API.networkStatus)
+
+		switch await fresh {
+		case .loaded(let value):
+			status = value
 			error = nil
-		} catch .cancelled {
-			return
-		} catch {
-			self.error = error
+		case .failed(let failure):
+			error = failure
+		case .loading, .none:
+			break
+		}
+		if case .loaded(let leaderboard) = await board {
+			top = leaderboard.entries
 		}
 	}
+
 }
