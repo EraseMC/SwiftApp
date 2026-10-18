@@ -32,6 +32,7 @@ jobs:
         run: |
           xcodebuild -version
           swift --version
+          xcrun simctl list runtimes
 
       - name: Generate project
         run: scripts/ci/xcodegen.sh

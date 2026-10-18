@@ -42,3 +42,16 @@ import Testing
 		#expect(ItemTexture.name(for: "strong_healing_splash_potion") == "Strong healing splash potion")
 	}
 }
+
+@Suite struct ResponseCacheTests {
+
+	@Test func storesAndReadsByURL() throws {
+		let folder = FileManager.default.temporaryDirectory.appending(path: UUID().uuidString)
+		let cache = ResponseCache(directory: folder)
+		let url = try #require(URL(string: "https://erasemc.com/api/v1/network/status"))
+
+		#expect(cache.data(for: url) == nil)
+		cache.store(Data("{}".utf8), for: url)
+		#expect(cache.data(for: url) == Data("{}".utf8))
+	}
+}

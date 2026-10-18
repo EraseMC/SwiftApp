@@ -5,7 +5,8 @@ public final class APIClient: Sendable {
 
 	public static let production = APIClient(
 		baseURL: URL(string: "https://erasemc.com/api/v1/")!,
-		credentials: Credentials(keychain: "com.erasemc.app.session")
+		credentials: Credentials(keychain: "com.erasemc.app.session"),
+		cache: .shared
 	)
 
 	public let baseURL: URL
@@ -17,18 +18,24 @@ public final class APIClient: Sendable {
 	/// The signed-in session's token, sent as a bearer token on every call.
 	public let credentials: Credentials
 
-	public init(baseURL: URL, session: URLSession = .shared, credentials: Credentials = Credentials()) {
+	private let cache: ResponseCache?
+
+	public init(baseURL: URL, session: URLSession = .shared, credentials: Credentials = Credentials(), cache: ResponseCache? = nil) {
 		self.baseURL = baseURL
 		self.session = session
 		self.credentials = credentials
+		self.cache = cache
 		self.decoder = .imprint
 	}
 
 	public func send<Response: Decodable & Sendable>(_ endpoint: Endpoint<Response>) async throws(APIError) -> Response {
 		var request = try endpoint.request(relativeTo: baseURL)
-		if let token = credentials.token {
+		let token = credentials.token
+		if let token {
 			request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 		}
+		// Public reads fall back to their last good body when the network is gone.
+		let cacheable = endpoint.method == .get && token == nil ? request.url : nil
 		let data: Data
 		let response: URLResponse
 
@@ -37,6 +44,9 @@ public final class APIClient: Sendable {
 		} catch let error as URLError where error.code == .cancelled {
 			throw .cancelled
 		} catch {
+			if let cacheable, let cached = cache?.data(for: cacheable), let value = try? decoder.decode(Response.self, from: cached) {
+				return value
+			}
 			throw .transport(error.localizedDescription)
 		}
 
@@ -50,7 +60,11 @@ public final class APIClient: Sendable {
 		}
 
 		do {
-			return try decoder.decode(Response.self, from: data)
+			let value = try decoder.decode(Response.self, from: data)
+			if let cacheable {
+				cache?.store(data, for: cacheable)
+			}
+			return value
 		} catch {
 			throw .decoding(String(describing: error))
 		}
