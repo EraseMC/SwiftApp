@@ -10,6 +10,6 @@ let package = Package(
 	],
 	targets: [
 		.target(name: "EraseKit"),
-		.testTarget(name: "EraseKitTests", dependencies: ["EraseKit"]),
+		.testTarget(name: "EraseKitTests", dependencies: ["EraseKit"], resources: [.copy("Fixtures")]),
 	]
 )

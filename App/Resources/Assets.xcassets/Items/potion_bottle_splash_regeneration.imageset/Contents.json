@@ -1,0 +1,16 @@
+{
+  "images": [
+    {
+      "idiom": "universal",
+      "filename": "potion_bottle_splash_regeneration.png"
+    }
+  ],
+  "info": {
+    "author": "xcode",
+    "version": 1
+  },
+  "properties": {
+    "preserves-vector-representation": false,
+    "compression-type": "lossless"
+  }
+}

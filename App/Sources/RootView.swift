@@ -5,7 +5,6 @@ enum AppTab: String, Hashable, CaseIterable {
 	case home
 	case leaderboards
 	case tiers
-	case clubs
 	case account
 	case search
 }
@@ -19,28 +18,37 @@ struct RootView: View {
 
 		TabView(selection: $model.tab) {
 			Tab("Home", systemImage: "house.fill", value: .home) {
-				NavigationStack { HomeView() }
+				stack(.home) { HomeView() }
 			}
 
 			Tab("Leaderboards", systemImage: "trophy.fill", value: .leaderboards) {
-				NavigationStack { ComingSoonView(title: "Leaderboards", systemImage: "trophy.fill") }
+				stack(.leaderboards) { LeaderboardsView() }
 			}
 
 			Tab("Tiers", systemImage: "chart.bar.fill", value: .tiers) {
-				NavigationStack { ComingSoonView(title: "Tiers", systemImage: "chart.bar.fill") }
-			}
-
-			Tab("Clubs", systemImage: "shield.lefthalf.filled", value: .clubs) {
-				NavigationStack { ComingSoonView(title: "Clubs", systemImage: "shield.lefthalf.filled") }
+				stack(.tiers) { ComingSoonView(title: "Tiers", systemImage: "chart.bar.fill") }
 			}
 
 			Tab("Account", systemImage: "person.crop.circle.fill", value: .account) {
-				NavigationStack { ComingSoonView(title: "Account", systemImage: "person.crop.circle.fill") }
+				stack(.account) { ComingSoonView(title: "Account", systemImage: "person.crop.circle.fill") }
 			}
 
 			Tab(value: .search, role: .search) {
-				NavigationStack { ComingSoonView(title: "Search", systemImage: "magnifyingglass") }
+				stack(.search) { ComingSoonView(title: "Search", systemImage: "magnifyingglass") }
 			}
+		}
+		.onOpenURL { url in
+			if let route = Route(url: url) {
+				model.open(route)
+			}
+		}
+	}
+
+	private func stack<Root: View>(_ tab: AppTab, @ViewBuilder root: () -> Root) -> some View {
+		@Bindable var model = model
+
+		return NavigationStack(path: $model.paths[tab, default: []]) {
+			root().routes()
 		}
 	}
 }

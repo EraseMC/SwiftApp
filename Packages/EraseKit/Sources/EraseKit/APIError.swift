@@ -19,4 +19,14 @@ public enum APIError: Error, Equatable, Sendable {
 		}
 		return false
 	}
+
+	/// A short line for the screen. Problem details from Imprint are already written for people.
+	public var message: String {
+		switch self {
+		case .transport(let message): message
+		case .status(let code, let detail): detail ?? "HTTP \(code)"
+		case .decoding: "Unexpected response from the server"
+		case .cancelled: "Cancelled"
+		}
+	}
 }

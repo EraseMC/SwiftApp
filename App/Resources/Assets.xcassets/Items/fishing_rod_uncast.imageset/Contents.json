@@ -1,0 +1,16 @@
+{
+  "images": [
+    {
+      "idiom": "universal",
+      "filename": "fishing_rod_uncast.png"
+    }
+  ],
+  "info": {
+    "author": "xcode",
+    "version": 1
+  },
+  "properties": {
+    "preserves-vector-representation": false,
+    "compression-type": "lossless"
+  }
+}

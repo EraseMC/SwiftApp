@@ -2,14 +2,15 @@ import Foundation
 
 extension JSONDecoder {
 
-	/// Decodes Imprint's Jackson output: ISO-8601 instants with up to nanosecond fractions.
+	/// Decodes Imprint's Jackson output: epoch seconds for stored timestamps,
+	/// ISO-8601 instants with up to nanosecond fractions for `Instant` fields.
 	public static var imprint: JSONDecoder {
 		let decoder = JSONDecoder()
 		decoder.dateDecodingStrategy = .custom { decoder in
 			let container = try decoder.singleValueContainer()
 
-			if let millis = try? container.decode(Double.self) {
-				return Date(timeIntervalSince1970: millis / 1000)
+			if let seconds = try? container.decode(Double.self) {
+				return Date(timeIntervalSince1970: seconds)
 			}
 
 			let text = try container.decode(String.self)

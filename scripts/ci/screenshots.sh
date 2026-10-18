@@ -6,7 +6,7 @@ set -euo pipefail
 app="$1"
 out="$2"
 bundle="com.erasemc.app"
-screens=(home leaderboards tiers clubs account search)
+screens=(home leaderboards tiers account search)
 
 mkdir -p "$out"
 
@@ -42,6 +42,10 @@ for language in en ru; do
 			sleep 5
 			xcrun simctl io "$udid" screenshot --type=png "$out/$language-$appearance-$screen.png" >/dev/null
 		done
+		# Pushed screens are reached through deep links.
+		xcrun simctl openurl "$udid" "erasemc://player/khaoslxng"
+		sleep 6
+		xcrun simctl io "$udid" screenshot --type=png "$out/$language-$appearance-player.png" >/dev/null
 	done
 done
 

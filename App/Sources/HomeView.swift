@@ -37,10 +37,10 @@ struct HomeView: View {
 	private var hero: some View {
 		VStack(alignment: .leading, spacing: Space.s2) {
 			Text("Every ladder. One rating.")
-				.font(.largeTitle.weight(.bold))
+				.font(.eraseHero)
 				.foregroundStyle(Palette.text)
 			Text("Ranked duels, tiers and tournaments for Minecraft: Bedrock Edition.")
-				.font(.subheadline)
+				.font(.eraseCallout)
 				.foregroundStyle(Palette.text2)
 		}
 		.padding(.vertical, Space.s2)
@@ -53,32 +53,32 @@ struct HomeView: View {
 					.fill(status?.isReachable == true ? Palette.win : Palette.text3)
 					.frame(width: 8, height: 8)
 				Text(status?.isReachable == false ? "Server offline" : "Online now")
-					.font(.footnote.weight(.semibold))
+					.font(.eraseFootnote.weight(.semibold))
 					.foregroundStyle(Palette.text2)
 				Spacer()
 				if let version = status?.version {
 					Text(version)
-						.font(.footnote.monospacedDigit())
+						.font(.eraseSmallNumber)
 						.foregroundStyle(Palette.text3)
 				}
 			}
 
 			HStack(alignment: .lastTextBaseline, spacing: Space.s2) {
 				Text(status?.online.map(String.init) ?? "—")
-					.font(.system(size: 48, weight: .bold, design: .monospaced))
+					.font(Typeface.mono(48, .bold, relativeTo: .largeTitle))
 					.contentTransition(.numericText())
 					.foregroundStyle(Palette.text)
 				if let max = status?.maxPlayers {
 					Text("/ \(max)")
-						.font(.title3.monospacedDigit())
+						.font(Typeface.mono(20, .medium, relativeTo: .title3))
 						.foregroundStyle(Palette.text3)
 				}
 			}
 			.animation(Motion.scope, value: status?.online)
 
 			if let error, status == nil {
-				Text(verbatim: describe(error))
-					.font(.footnote)
+				Text(verbatim: error.message)
+					.font(.eraseFootnote)
 					.foregroundStyle(Palette.loss)
 			}
 
@@ -88,7 +88,7 @@ struct HomeView: View {
 			} label: {
 				HStack {
 					Text(verbatim: address)
-						.font(.body.monospaced())
+						.font(.eraseNumber)
 						.foregroundStyle(Palette.text)
 					Spacer()
 					Image(systemName: copied ? "checkmark" : "doc.on.doc")
@@ -137,22 +137,13 @@ struct HomeView: View {
 
 	private func load() async {
 		do throws(APIError) {
-			let fresh = try await model.api.send(.networkStatus)
+			let fresh = try await model.api.send(API.networkStatus)
 			status = fresh
 			error = nil
 		} catch .cancelled {
 			return
 		} catch {
 			self.error = error
-		}
-	}
-
-	private func describe(_ error: APIError) -> String {
-		switch error {
-		case .transport(let message): message
-		case .status(let code, let detail): detail ?? "HTTP \(code)"
-		case .decoding: "Unexpected response"
-		case .cancelled: ""
 		}
 	}
 }

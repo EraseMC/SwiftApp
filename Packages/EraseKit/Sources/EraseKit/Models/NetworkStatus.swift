@@ -15,7 +15,3 @@ public struct NetworkStatus: Codable, Hashable, Sendable {
 		online != nil
 	}
 }
-
-extension Endpoint where Response == NetworkStatus {
-	public static var networkStatus: Self { Endpoint("network/status") }
-}

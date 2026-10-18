@@ -60,6 +60,17 @@ targets:
           - ru
         CFBundleDevelopmentRegion: en
         ITSAppUsesNonExemptEncryption: false
+        UIAppFonts:
+          - Geologica-Medium.ttf
+          - Geologica-SemiBold.ttf
+          - Geologica-Bold.ttf
+          - Onest-Regular.ttf
+          - Onest-Medium.ttf
+          - Onest-SemiBold.ttf
+          - Onest-Bold.ttf
+          - JetBrainsMono-Regular.ttf
+          - JetBrainsMono-Medium.ttf
+          - JetBrainsMono-Bold.ttf
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.erasemc.app

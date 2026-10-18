@@ -65,7 +65,7 @@ public struct PrimaryButtonStyle: ButtonStyle {
 
 	public func makeBody(configuration: Configuration) -> some View {
 		configuration.label
-			.font(.body.weight(.semibold))
+			.font(Typeface.body(16, .semibold, relativeTo: .headline))
 			.foregroundStyle(Palette.accentInk)
 			.padding(.horizontal, Space.s5)
 			.padding(.vertical, Space.s3)
