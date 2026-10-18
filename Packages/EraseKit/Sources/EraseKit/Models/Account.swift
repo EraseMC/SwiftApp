@@ -8,6 +8,13 @@ public struct AuthIdentity: Codable, Hashable, Sendable {
 	public let playerName: String?
 	/// `tester`, `moderator`, `admin` or `owner` for staff.
 	public let staff: String?
+
+	public init(configured: Bool, authenticated: Bool, playerName: String?, staff: String?) {
+		self.configured = configured
+		self.authenticated = authenticated
+		self.playerName = playerName
+		self.staff = staff
+	}
 }
 
 public struct AppSession: Codable, Hashable, Sendable {
